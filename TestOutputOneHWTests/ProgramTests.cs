@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TestOutputOneHW.Tests
 {
@@ -41,6 +42,46 @@ namespace TestOutputOneHW.Tests
             var actual = value.GetActual();
 
             Assert.AreEqual(expect, actual);
+        }
+
+
+        /// <summary>
+        /// 筆數若輸入為0, 則傳回0
+        /// </summary>
+        [TestMethod()]
+        public void 測試_筆數0_回傳0()
+        {
+            Model data = new Model();
+            ITestOutputOneHW value = new TestValue<IList>(input: data.GetData("Revenue"), count: 0, expect: "0");
+
+            //預期的值
+            var expect = value.Expect;
+            //測試結果
+            var actual = value.GetActual();
+
+            Assert.AreEqual(expect, actual);
+        }
+
+        /// <summary>
+        ///測試_筆數輸入負_預期會拋 ArgumentException
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod()]
+        public void 測試_筆數輸入負_預期會拋_ArgumentException()
+        {
+            Model data = new Model();
+            ITestOutputOneHW value = new TestValue<IList>(input: data.GetData("Revenue"), count: -1, expect: "0");
+        }
+
+        /// <summary>
+        ///測試_欄位不存在_預期會拋 ArgumentException
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod()]
+        public void 測試_欄位不存在_預期會拋_ArgumentException()
+        {
+            Model data = new Model();
+            ITestOutputOneHW value = new TestValue<IList>(input: data.GetData("employee"), count: 1, expect: "0");
         }
     }
 
@@ -82,8 +123,9 @@ namespace TestOutputOneHW.Tests
 
                 IList list = _intput as IList;
                 IList<double> output = new List<double>();
-                int Index = 1;
-                double Sum = 0;
+
+                var Index = 1;
+                var Sum = 0d;
 
                 foreach (var item in list)
                 {
@@ -120,6 +162,7 @@ namespace TestOutputOneHW.Tests
     {
         private Dictionary<string, IList> Data = new Dictionary<string, IList>();
 
+
         //未來可能會新增其他欄位
         public Model()
         {
@@ -142,4 +185,5 @@ namespace TestOutputOneHW.Tests
             }
         }
     }
+
 }
