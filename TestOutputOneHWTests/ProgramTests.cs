@@ -16,12 +16,12 @@ namespace TestOutputOneHW.Tests
         public void 測試_3組_Cost總和()
         {
             Model data = new Model();
-            TestValue<IList> value = new TestValue<IList>(input: data.GetData("Cost"), count: 3, expect: "6,15,24,21");
+            ITestOutputOneHW value = new TestValue<IList>(input: data.GetData("Cost"), count: 3, expect: "6,15,24,21");
 
             //預期的值
-            var expect = value.GetGetExpect();
+            var expect = value.Expect;
             //測試結果
-            var actual = value.GetExpect();
+            var actual = value.GetActual();
 
             Assert.AreEqual(expect, actual);
         }
@@ -33,12 +33,12 @@ namespace TestOutputOneHW.Tests
         public void 測試_4組_Revenue總和()
         {
             Model data = new Model();
-            TestValue<IList> value = new TestValue<IList>(input: data.GetData("Revenue"), count: 4, expect: "50,66,60");
+            ITestOutputOneHW value = new TestValue<IList>(input: data.GetData("Revenue"), count: 4, expect: "50,66,60");
 
             //預期的值
-            var expect = value.GetGetExpect();
+            var expect = value.Expect;
             //測試結果
-            var actual = value.GetExpect();
+            var actual = value.GetActual();
 
             Assert.AreEqual(expect, actual);
         }
@@ -48,16 +48,12 @@ namespace TestOutputOneHW.Tests
     /// 初始值
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TestValue<T>
+    public class TestValue<T> : ITestOutputOneHW
     {
         private T _intput { get; set; }
         private int _count { get; set; }
         private string _expect { get; set; }
-
-        public string GetGetExpect()
-        {
-            return _expect;
-        }
+        public string Expect => _expect;
 
         public TestValue(T input, int count, string expect)
         {
@@ -76,7 +72,7 @@ namespace TestOutputOneHW.Tests
         /// 取得結果
         /// </summary>
         /// <returns></returns>
-        public string GetExpect()
+        public string GetActual()
         {
             try
             {
@@ -109,6 +105,12 @@ namespace TestOutputOneHW.Tests
                 return e.ToString();
             }
         }
+    }
+
+    public interface ITestOutputOneHW
+    {
+        string Expect { get; }
+        string GetActual();
     }
 
     /// <summary>
